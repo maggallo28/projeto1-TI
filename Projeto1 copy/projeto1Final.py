@@ -6,41 +6,20 @@ import numpy as np
 path = '/Users/manuelgallo/Documents/Universidade/2º ANO/TI/Projeto1/CarDataset.xlsx'
 data = pd.read_excel(path)
 
-# Converter para lista
 matriz = data.values.tolist()
-varNames = data.columns.values.tolist() #construir uma lista com os nomes das variaveis --1.c)
+varNames = data.columns.values.tolist()
 
-#imprimir a matriz --1.b)
-def printMatriz(matriz):
-    for linha in matriz:
-        print("\n", linha)
-
-#funcao para contar o numero de ocorencias de cada valor do alfabeto
-#funcao para contar o numero de ocorencias de cada valor do alfabeto
 def conta_ocorrencias(matriz):
-    # Converter para uint16 -- 3.a
     matriz = np.array(matriz, dtype=np.uint16)
-
-    # Definir o alfabeto -- 3.b
     alfabeto = np.unique(matriz)
-
     listaContador = []
-
-    # Para cada variável (coluna)
+    
     for i in range(matriz.shape[1]):
         coluna = matriz[:, i]
-
-        # Contar ocorrências com np.unique
         valores, contagens = np.unique(coluna, return_counts=True)
-
-        # Criar vetor de contagem com zeros (para todo o alfabeto)
         contagem_coluna = np.zeros(len(alfabeto), dtype=int)
-
-        # Alinhar as contagens segundo o índice no alfabeto
         indices = np.searchsorted(alfabeto, valores)
         contagem_coluna[indices] = contagens
-
-        # Guardar como dicionário {símbolo: contagem}
         listaContador.append(dict(zip(alfabeto, contagem_coluna)))
 
     return listaContador, alfabeto
