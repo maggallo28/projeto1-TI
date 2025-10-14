@@ -18,41 +18,31 @@ varNames = data.columns.values.tolist() #construir uma lista com os nomes das va
 for linha in matriz:
     print("\n", linha)
 
-def contar_ocorrencias(matriz):
+import numpy as np
+
+def contar_ocorrencias_numpy(matriz):
     """
-    Função que calcula o número de ocorrências para cada símbolo do alfabeto
-    (0 a 65535) para cada variável (coluna) da matriz.
-    Retorna a lista de contadores e o tamanho do alfabeto.
-    --ex.4
+    Conta as ocorrências de cada valor (0-65535) em cada variável (coluna)
+    usando NumPy, de forma vetorizada e muito mais eficiente.
+    Retorna uma lista de dicionários {valor: contagem}.
     """
-    length = len(matriz) # quantidade de modelos de carro
-    parametros = len(matriz[0]) # quantidade de parametros
+    matriz_np = np.array(matriz, dtype=np.uint16)
+    parametros = matriz_np.shape[1]
 
-    tamanho = 2**16 # estou a supor que o alfabeto vai de 0 a 2**16 - 1
+    listaContador = []
 
-    listaContador = []  #lista para cada variavel para poder armazenar a contagem de ocorrencias
-
-    # criar uma sublista para cada coluna (e nao cada carro), com 2**16 zeros cada uma
     for i in range(parametros):
-        #cria a sublista com tantos zeros como o tamanho, ou seja 2**16 zeros
-        listaContador.append([0]*tamanho) #append serve para adicionar esta sublista à lista principal listaContador
+        col = matriz_np[:, i]                       # extrai uma coluna
+        valores, contagens = np.unique(col, return_counts=True)
+        listaContador.append(dict(zip(valores, contagens)))
 
-    # contar as ocorrencias de cada valor
-    for i in range(parametros): #percorre cada coluna(variavel)
-        for j in range(length): #para cada variavel, percorre todos os carros
-            valor = matriz[j][i] #vai buscar o valor do parâmetro i no carro j
-            listaContador[i][valor] += 1 # adicionar 1 na posição do valor do parametro associado
+    return listaContador
+listaContador = contar_ocorrencias_numpy(matriz)
 
-    return listaContador, tamanho
-
-listaContador, tamanho = contar_ocorrencias(matriz)
-
-#imprimir os valores ( nao estou a perceber muito bem este ciclo)
-for i in range(len(varNames)):
+for i, contador in enumerate(listaContador):
     print(f"\n--- Contagem de símbolos para {varNames[i]} ---")
-    for j in range(tamanho):
-        if listaContador[i][j] != 0:
-            print(f"{j}:{listaContador[i][j]}") #nao estou a perceber como o codigo imprime o valor 
+    for valor, contagem in contador.items():
+        print(f"{valor}: {contagem}")
 
 #mostrar figura --exercicio 2
 fig, axs = plt.subplots(3, 2, figsize=(10, 10))  # (linhas, colunas) graficos na mesma figura --2.b)
