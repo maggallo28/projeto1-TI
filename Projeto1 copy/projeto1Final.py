@@ -2,12 +2,6 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import numpy as np
 
-path = '/Users/manuelgallo/Documents/Universidade/2º ANO/TI/Projeto1/CarDataset.xlsx'
-data = pd.read_excel(path)
-
-matriz = data.values.tolist()
-varNames = data.columns.values.tolist()
-
 def conta_ocorrencias(matriz):
     matriz = np.array(matriz, dtype=np.uint16)
     alfabeto = np.unique(matriz)
@@ -23,20 +17,33 @@ def conta_ocorrencias(matriz):
 
     return listaContador, alfabeto
 
-fig = plt.subplots(3, 2, figsize=(10, 10))
+def plot_mpg_scatter(data, varNames):
+    plt.close('all')  
+    fig = plt.subplots(3, 2, figsize=(10, 10))
 
-for i in range(len(varNames) - 1):
-    plt.subplot(3, 2, i + 1)  # (linhas, colunas, índice). graficos na mesma figura --2.b
-    plt.scatter(data[varNames[i]], data['MPG'], c="#C50404")
-    plt.title(f"MPG vs {varNames[i]}")  #titulo --2.c)
-    plt.xlabel(varNames[i]) #nome da variavel correspondente --2.c)
-    plt.ylabel('MPG')       #nome da variavel correspondente --2.c)
-    
-    # Garantir que os ticks sejam inteiros --dados discretos --2.a)
-    plt.gca().xaxis.set_major_locator(plt.MaxNLocator(integer=True))
-    plt.gca().yaxis.set_major_locator(plt.MaxNLocator(integer=True))
+    for i in range(len(varNames) - 1):
+        plt.subplot(3, 2, i + 1)
+        plt.scatter(data[varNames[i]], data['MPG'], c="#C50404")
+        plt.title(f"MPG vs {varNames[i]}")
+        plt.xlabel(varNames[i])
+        plt.ylabel('MPG')
+        plt.gca().xaxis.set_major_locator(plt.MaxNLocator(integer=True))
+        plt.gca().yaxis.set_major_locator(plt.MaxNLocator(integer=True))
 
-listaContador = conta_ocorrencias(matriz)
+    plt.tight_layout()
+    plt.show()
 
-plt.tight_layout()
-plt.show()
+def main():
+    path = '/Users/manuelgallo/Documents/Universidade/2º ANO/TI/Projeto1/CarDataset.xlsx'
+    data = pd.read_excel(path)
+
+    matriz = data.values.tolist()
+    varNames = data.columns.values.tolist()
+
+    plot_mpg_scatter(data, varNames)
+
+    listaContador, alfabeto = conta_ocorrencias(matriz)
+
+    return listaContador, alfabeto
+
+listaContador, alfabeto = main()
