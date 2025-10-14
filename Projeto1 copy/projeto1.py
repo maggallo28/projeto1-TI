@@ -6,6 +6,10 @@ import numpy as np
 path = '/Users/manuelgallo/Documents/Universidade/2º ANO/TI/Projeto1/CarDataset.xlsx'
 data = pd.read_excel(path)
 
+# Converter para uint16 --3.a)
+for i in data.columns:
+    data[i] = data[i].astype(np.uint16)
+
 # Converter para lista
 matriz = data.values.tolist()
 varNames = data.columns.values.tolist() #construir uma lista com os nomes das variaveis --1.c)
@@ -60,9 +64,6 @@ for i in range(len(varNames) - 1):
     plt.xlabel(varNames[i]) #nome da variavel correspondente --2.c)
     plt.ylabel('MPG')       #nome da variavel correspondente --2.c)
     
-    #converter para uint16 --3.a)
-    data[varNames[i]] = data[varNames[i]].astype(np.uint16) 
-
     # Garantir que os ticks sejam inteiros --dados discretos --2.a)
     plt.gca().xaxis.set_major_locator(plt.MaxNLocator(integer=True))
     plt.gca().yaxis.set_major_locator(plt.MaxNLocator(integer=True))
