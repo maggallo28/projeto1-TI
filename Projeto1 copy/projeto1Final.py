@@ -17,7 +17,7 @@ def conta_ocorrencias(matriz):
 
 def plot_mpg_scatter(data, varNames):
     plt.close('all')  
-    fig = plt.subplots(3, 2, figsize=(10, 10))
+    plt.subplots(3, 2, figsize=(10, 10))
 
     for i in range(len(varNames) - 1):
         plt.subplot(3, 2, i + 1)
