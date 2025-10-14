@@ -54,6 +54,13 @@ def plot_mpg_scatter(data, varNames):
         plt.ylabel('MPG')                    # Nome do eixo Y
 
         # Configura os eixos para mostrar apenas números inteiros 
+        '''O “locator” diz ao Matplotlib onde colocar as marcas principais (ticks) no eixo.
+            Podes definir tu mesmo, ou usar uma classe automática — como a MaxNLocator.
+            --plt.MaxNLocator(integer=True)
+            Este é o tipo de locator que controla o espaçamento das marcas.
+            O argumento integer=True diz:
+            “coloca apenas marcas em valores inteiros (sem números decimais).”'''
+        
         plt.gca().xaxis.set_major_locator(plt.MaxNLocator(integer=True))
         plt.gca().yaxis.set_major_locator(plt.MaxNLocator(integer=True))
 
