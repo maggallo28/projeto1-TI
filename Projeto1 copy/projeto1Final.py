@@ -2,7 +2,6 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import numpy as np
 
-# Caminho do ficheiro
 path = '/Users/manuelgallo/Documents/Universidade/2º ANO/TI/Projeto1/CarDataset.xlsx'
 data = pd.read_excel(path)
 
@@ -24,8 +23,7 @@ def conta_ocorrencias(matriz):
 
     return listaContador, alfabeto
 
-#mostrar figura --exercicio 2
-fig, axs = plt.subplots(3, 2, figsize=(10, 10))  # (linhas, colunas) graficos na mesma figura --2.b)
+fig = plt.subplots(3, 2, figsize=(10, 10))
 
 for i in range(len(varNames) - 1):
     plt.subplot(3, 2, i + 1)  # (linhas, colunas, índice). graficos na mesma figura --2.b
@@ -40,15 +38,5 @@ for i in range(len(varNames) - 1):
 
 listaContador = conta_ocorrencias(matriz)
 
-#Imprime o reultado
-for i in range(len(listaContador)):
-    print("\n_____Contagem de símbolos para",varNames[i], "_____")
-
-    posicao = listaContador[i]
-
-    for numero in posicao:
-        print(numero, ":", posicao[numero])
-
-# Ajustar espaçamento entre os gráficos
 plt.tight_layout()
 plt.show()
