@@ -6,32 +6,37 @@ import numpy as np
 path = '/Users/manuelgallo/Documents/Universidade/2º ANO/TI/Projeto1/CarDataset.xlsx'
 data = pd.read_excel(path)
 
-# Converter para uint16 --3.a)
-for i in data.columns:
-    data[i] = data[i].astype(np.uint16)
-
 # Converter para lista
-matriz = np.array(data.values.tolist(), dtype=np.uint16)
+matriz = data.values.tolist()
 varNames = data.columns.values.tolist() #construir uma lista com os nomes das variaveis --1.c)
 
 #imprimir a matriz --1.b)
 for linha in matriz:
     print("\n", linha)
 
-
-def contar_ocorrencias_numpy(matriz):
-    """
-    Conta as ocorrências de cada valor (0-65535) em cada variável (coluna)
-    usando NumPy, de forma vetorizada e muito mais eficiente.
-    Retorna uma lista de dicionários {valor: contagem}.
-    """
+#funcao para contar o numero de ocorencias de cada valor do alfabeto
+def conta_occorencias(matriz):
+    
+    #transforma os elementos da matriz (uint8) em uint16
+    matriz = np.array(matriz, dtype=np.uint16   )# Converter para uint16 --3.a)
 
     listaContador = []
 
-    for i in range(len(varNames)):
-        col = matriz[:, i]                       # extrai uma coluna
-        valores, contagens = np.unique(col, return_counts=True)
-        listaContador.append(dict(zip(valores, contagens)))
+    #conta para cada valor presente na matriz o numero de ocorencias deste
+    for i in range(matriz.shape[1]):  #percorre cada coluna
+        coluna = matriz[:, i] #pega todos os elementos da coluna (i)
+        contador = {}
+
+        for valor in coluna:
+
+            #adiciona +1 ou inicializa o a 1 se ele nao exitir ainda
+            if valor in contador:
+                contador[valor] += 1
+            else:
+                contador[valor] = 1
+
+        #adiciona esses valores a nova lista 
+        listaContador.append(contador)
 
     return listaContador
 
@@ -49,14 +54,17 @@ for i in range(len(varNames) - 1):
     plt.gca().xaxis.set_major_locator(plt.MaxNLocator(integer=True))
     plt.gca().yaxis.set_major_locator(plt.MaxNLocator(integer=True))
 
+listaContador = conta_occorencias(matriz)
+
+#Imprime o reultado
+for i in range(len(listaContador)):
+    print("\n_____Contagem de símbolos para",varNames[i], "_____")
+
+    posicao = listaContador[i]
+
+    for numero in posicao:
+        print(numero, ":", posicao[numero])
+
 # Ajustar espaçamento entre os gráficos
-
-listaContador = contar_ocorrencias_numpy(matriz)
-
-for i, contador in enumerate(listaContador):
-    print(f"\n--- Contagem de símbolos para {varNames[i]} ---")
-    for valor, contagem in contador.items():
-        print(f"{valor}: {contagem}")
-        
 plt.tight_layout()
 plt.show()
