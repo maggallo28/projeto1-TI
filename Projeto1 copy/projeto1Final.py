@@ -3,19 +3,17 @@ import matplotlib.pyplot as plt
 import numpy as np
 
 def conta_ocorrencias(matriz):
-    matriz = np.array(matriz, dtype=np.uint16)
-    alfabeto = np.unique(matriz)
+    matriz = np.array(matriz, dtype=object)
     listaContador = []
-    
+    alfabetos = []
+
     for i in range(matriz.shape[1]):
         coluna = matriz[:, i]
         valores, contagens = np.unique(coluna, return_counts=True)
-        contagem_coluna = np.zeros(len(alfabeto), dtype=int)
-        indices = np.searchsorted(alfabeto, valores)
-        contagem_coluna[indices] = contagens
-        listaContador.append(dict(zip(alfabeto, contagem_coluna)))
+        listaContador.append(dict(zip(valores, contagens)))
+        alfabetos.append(valores)
 
-    return listaContador, alfabeto
+    return listaContador, alfabetos
 
 def plot_mpg_scatter(data, varNames):
     plt.close('all')  

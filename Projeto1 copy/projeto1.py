@@ -2,74 +2,60 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import numpy as np
 
-# Caminho do ficheiro
-path = '/Users/manuelgallo/Documents/Universidade/2º ANO/TI/Projeto1/CarDataset.xlsx'
-data = pd.read_excel(path)
-
-# Converter para lista
-matriz = data.values.tolist()
-varNames = data.columns.values.tolist() #construir uma lista com os nomes das variaveis --1.c)
-
-#imprimir a matriz --1.b)
-def printMatriz(matriz):
-    for linha in matriz:
-        print("\n", linha)
-
-#funcao para contar o numero de ocorencias de cada valor do alfabeto
-#funcao para contar o numero de ocorencias de cada valor do alfabeto
 def conta_ocorrencias(matriz):
-    # Converter para uint16 -- 3.a
-    matriz = np.array(matriz, dtype=np.uint16)
-
-    # Definir o alfabeto -- 3.b
-    alfabeto = np.unique(matriz)
-
+    matriz = np.array(matriz, dtype=object)
     listaContador = []
+    alfabetos = []
 
-    # Para cada variável (coluna)
     for i in range(matriz.shape[1]):
         coluna = matriz[:, i]
-
-        # Contar ocorrências com np.unique
         valores, contagens = np.unique(coluna, return_counts=True)
+        listaContador.append(dict(zip(valores, contagens)))
+        alfabetos.append(valores)
 
-        # Criar vetor de contagem com zeros (para todo o alfabeto)
-        contagem_coluna = np.zeros(len(alfabeto), dtype=int)
+    return listaContador, alfabetos
 
-        # Alinhar as contagens segundo o índice no alfabeto
-        indices = np.searchsorted(alfabeto, valores)
-        contagem_coluna[indices] = contagens
 
-        # Guardar como dicionário {símbolo: contagem}
-        listaContador.append(dict(zip(alfabeto, contagem_coluna)))
+def plot_mpg_scatter(data, varNames):
+    plt.close('all')  
+    fig = plt.subplots(3, 2, figsize=(10, 10))
 
-    return listaContador, alfabeto
+    for i in range(len(varNames) - 1):
+        plt.subplot(3, 2, i + 1)
+        plt.scatter(data[varNames[i]], data['MPG'], c="#C50404")
+        plt.title(f"MPG vs {varNames[i]}")
+        plt.xlabel(varNames[i])
+        plt.ylabel('MPG')
+        plt.gca().xaxis.set_major_locator(plt.MaxNLocator(integer=True))
+        plt.gca().yaxis.set_major_locator(plt.MaxNLocator(integer=True))
 
-#mostrar figura --exercicio 2
-fig, axs = plt.subplots(3, 2, figsize=(10, 10))  # (linhas, colunas) graficos na mesma figura --2.b)
+    plt.tight_layout()
+    plt.show()
 
-for i in range(len(varNames) - 1):
-    plt.subplot(3, 2, i + 1)  # (linhas, colunas, índice). graficos na mesma figura --2.b
-    plt.scatter(data[varNames[i]], data['MPG'], c="#C50404")
-    plt.title(f"MPG vs {varNames[i]}")  #titulo --2.c)
-    plt.xlabel(varNames[i]) #nome da variavel correspondente --2.c)
-    plt.ylabel('MPG')       #nome da variavel correspondente --2.c)
-    
-    # Garantir que os ticks sejam inteiros --dados discretos --2.a)
-    plt.gca().xaxis.set_major_locator(plt.MaxNLocator(integer=True))
-    plt.gca().yaxis.set_major_locator(plt.MaxNLocator(integer=True))
 
-listaContador = conta_ocorrencias(matriz)
+def main():
+    path = '/Users/manuelgallo/Documents/Universidade/2º ANO/TI/Projeto1/CarDataset.xlsx'
+    data = pd.read_excel(path)
 
-#Imprime o reultado
-for i in range(len(listaContador)):
-    print("\n_____Contagem de símbolos para",varNames[i], "_____")
+    matriz = data.values.tolist()
+    varNames = data.columns.values.tolist()
 
-    posicao = listaContador[i]
+    plot_mpg_scatter(data, varNames)
 
-    for numero in posicao:
-        print(numero, ":", posicao[numero])
+    listaContador, alfabetos = conta_ocorrencias(matriz)
 
-# Ajustar espaçamento entre os gráficos
-plt.tight_layout()
-plt.show()
+    # === Impressão da matriz ===
+    print("\n===== MATRIZ DE DADOS =====")
+    for linha in matriz:
+        print(linha)
+
+    # === Impressão das ocorrências ===
+    for i in range(len(listaContador)):
+        print(f"\n_____ Contagem de símbolos para {varNames[i]} _____")
+        for valor, contagem in listaContador[i].items():
+            print(f"{valor}: {contagem}")
+
+    return listaContador, alfabetos
+
+
+listaContador, alfabetos = main()
