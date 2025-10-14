@@ -3,7 +3,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 
 def conta_ocorrencias(matriz):
-    matriz = np.array(matriz, dtype=object)
+    matriz = np.array(matriz, dtype=np.uint16)
     listaContador = []
     alfabetos = []
 
@@ -16,7 +16,6 @@ def conta_ocorrencias(matriz):
     return listaContador, alfabetos
 
 def plot_mpg_scatter(data, varNames):
-    plt.close('all')  
     plt.subplots(3, 2, figsize=(10, 10))
 
     for i in range(len(varNames) - 1):

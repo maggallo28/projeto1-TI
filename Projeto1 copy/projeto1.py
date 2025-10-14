@@ -13,7 +13,7 @@ import numpy as np               # Biblioteca para operações numéricas e mani
 
 def conta_ocorrencias(matriz):
     # Converte a lista de listas (matriz) para um array NumPy genérico (permite misturar texto e números)
-    matriz = np.array(matriz, dtype=object)
+    matriz = np.array(matriz, dtype=np.uint16)
 
     listaContador = []  # Lista onde ficará um dicionário de contagens para cada coluna
     alfabetos = []      # Lista com os valores únicos (alfabeto) de cada coluna
