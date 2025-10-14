@@ -45,7 +45,7 @@ fig, axs = plt.subplots(3, 2, figsize=(10, 10))  # (linhas, colunas) graficos na
 
 for i in range(len(varNames) - 1):
     plt.subplot(3, 2, i + 1)  # (linhas, colunas, índice). graficos na mesma figura --2.b
-    plt.scatter(data[varNames[i]], data['MPG'])
+    plt.scatter(data[varNames[i]], data['MPG'], c="#C50404")
     plt.title(f"MPG vs {varNames[i]}")  #titulo --2.c)
     plt.xlabel(varNames[i]) #nome da variavel correspondente --2.c)
     plt.ylabel('MPG')       #nome da variavel correspondente --2.c)
