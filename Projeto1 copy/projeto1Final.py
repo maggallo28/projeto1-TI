@@ -9,8 +9,8 @@ def conta_ocorrencias(matriz):
 
     for i in range(matriz.shape[1]):
         coluna = matriz[:, i]
-        valores, contagens = np.unique(coluna, return_counts=True)
-        listaContador.append(dict(zip(valores, contagens)))
+        valores, contagemValor = np.unique(coluna, return_counts=True)
+        listaContador.append(dict(zip(valores, contagemValor)))
         alfabetos.append(valores)
 
     return listaContador, alfabetos
