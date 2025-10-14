@@ -11,14 +11,13 @@ for i in data.columns:
     data[i] = data[i].astype(np.uint16)
 
 # Converter para lista
-matriz = data.values.tolist()
+matriz = np.array(data.values.tolist(), dtype=np.uint16)
 varNames = data.columns.values.tolist() #construir uma lista com os nomes das variaveis --1.c)
 
 #imprimir a matriz --1.b)
 for linha in matriz:
     print("\n", linha)
 
-import numpy as np
 
 def contar_ocorrencias_numpy(matriz):
     """
@@ -26,23 +25,15 @@ def contar_ocorrencias_numpy(matriz):
     usando NumPy, de forma vetorizada e muito mais eficiente.
     Retorna uma lista de dicionários {valor: contagem}.
     """
-    matriz_np = np.array(matriz, dtype=np.uint16)
-    parametros = matriz_np.shape[1]
 
     listaContador = []
 
-    for i in range(parametros):
-        col = matriz_np[:, i]                       # extrai uma coluna
+    for i in range(len(varNames)):
+        col = matriz[:, i]                       # extrai uma coluna
         valores, contagens = np.unique(col, return_counts=True)
         listaContador.append(dict(zip(valores, contagens)))
 
     return listaContador
-listaContador = contar_ocorrencias_numpy(matriz)
-
-for i, contador in enumerate(listaContador):
-    print(f"\n--- Contagem de símbolos para {varNames[i]} ---")
-    for valor, contagem in contador.items():
-        print(f"{valor}: {contagem}")
 
 #mostrar figura --exercicio 2
 fig, axs = plt.subplots(3, 2, figsize=(10, 10))  # (linhas, colunas) graficos na mesma figura --2.b)
@@ -59,5 +50,13 @@ for i in range(len(varNames) - 1):
     plt.gca().yaxis.set_major_locator(plt.MaxNLocator(integer=True))
 
 # Ajustar espaçamento entre os gráficos
+
+listaContador = contar_ocorrencias_numpy(matriz)
+
+for i, contador in enumerate(listaContador):
+    print(f"\n--- Contagem de símbolos para {varNames[i]} ---")
+    for valor, contagem in contador.items():
+        print(f"{valor}: {contagem}")
+        
 plt.tight_layout()
 plt.show()
