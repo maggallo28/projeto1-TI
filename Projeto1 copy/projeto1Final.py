@@ -15,12 +15,12 @@ def conta_ocorrencias(matriz):
 
     return listaContador, alfabetos
 
-def plot_mpg_scatter(data, varNames):
+def grafico(data, varNames):
     plt.subplots(3, 2, figsize=(10, 10))
 
     for i in range(len(varNames) - 1):
         plt.subplot(3, 2, i + 1)
-        plt.scatter(data[varNames[i]], data['MPG'], c="#C50404")
+        plt.scatter(data[varNames[i]], data['MPG'], c="#C50465")
         plt.title(f"MPG vs {varNames[i]}")
         plt.xlabel(varNames[i])
         plt.ylabel('MPG')
@@ -37,7 +37,7 @@ def main():
     matriz = data.values.tolist()
     varNames = data.columns.values.tolist()
 
-    plot_mpg_scatter(data, varNames)
+    grafico(data, varNames)
 
     listaContador, alfabeto = conta_ocorrencias(matriz)
 

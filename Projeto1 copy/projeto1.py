@@ -20,7 +20,7 @@ def conta_ocorrencias(matriz):
 
     # Percorre todas as colunas da matriz (pelo número de colunas)
     for i in range(matriz.shape[1]):
-        coluna = matriz[:, i]  # Seleciona a coluna i
+        coluna = matriz[:, i]  # Seleciona a coluna i e percorre todas as linhas
 
         # np.unique devolve os valores únicos e as suas contagens
         valores, contagens = np.unique(coluna, return_counts=True)
