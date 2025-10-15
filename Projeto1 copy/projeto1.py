@@ -18,7 +18,6 @@ def conta_ocorrencias(matriz):
         listaContador.append(dict(zip(valores, contagens)))
 
         alfabetos.append(valores)
-
     return listaContador, alfabetos
 
 def grafico(data, varNames):
