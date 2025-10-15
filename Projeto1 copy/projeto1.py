@@ -42,8 +42,7 @@ def conta_ocorrencias(matriz):
 # ============================================================
 
 def grafico(data, varNames):
-    plt.close('all')  # Fecha quaisquer janelas de gráficos antigas (limpeza de estado)
-    fig = plt.subplots(3, 2, figsize=(10, 10))  # Cria uma figura com 3 linhas e 2 colunas de subplots
+    plt.subplots(3, 2, figsize=(10, 10))  # Cria uma figura com 3 linhas e 2 colunas de subplots
 
     # Percorre todas as variáveis menos a última (para evitar "MPG vs MPG")
     for i in range(len(varNames) - 1):
