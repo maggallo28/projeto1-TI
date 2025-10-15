@@ -36,12 +36,12 @@ def conta_ocorrencias(matriz):
 
 
 # ============================================================
-# Função: plot_mpg_scatter
+# Função: grafico
 # Objetivo: gerar gráficos de dispersão (scatter plots)
 #           relacionando "MPG" com outras variáveis do dataset
 # ============================================================
 
-def plot_mpg_scatter(data, varNames):
+def grafico(data, varNames):
     plt.close('all')  # Fecha quaisquer janelas de gráficos antigas (limpeza de estado)
     fig = plt.subplots(3, 2, figsize=(10, 10))  # Cria uma figura com 3 linhas e 2 colunas de subplots
 
@@ -107,7 +107,7 @@ def main():
             print(f"{valor}: {contagem}")
 
     # Gera e mostra os gráficos de dispersão
-    plot_mpg_scatter(data, varNames)
+    grafico(data, varNames)
 
     # Retorna as contagens e alfabetos (caso se queira usar depois)
     return listaContador, alfabetos

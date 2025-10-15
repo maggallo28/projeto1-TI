@@ -24,9 +24,12 @@ def grafico(data, varNames):
         plt.title(f"MPG vs {varNames[i]}")
         plt.xlabel(varNames[i])
         plt.ylabel('MPG')
+        
+        # serve para aparecerem so inteiros no grafico
         plt.gca().xaxis.set_major_locator(plt.MaxNLocator(integer=True))
         plt.gca().yaxis.set_major_locator(plt.MaxNLocator(integer=True))
 
+    # ajusta automaticamente os elementos do grafico (melhor visual)
     plt.tight_layout()
     plt.show()
 
