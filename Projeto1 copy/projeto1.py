@@ -53,13 +53,12 @@ def grafico(data, varNames):
         plt.xlabel(varNames[i])              # Nome do eixo X
         plt.ylabel('MPG')                    # Nome do eixo Y
 
-        # Configura os eixos para mostrar apenas números inteiros 
-        '''O “locator” diz ao Matplotlib onde colocar as marcas principais (ticks) no eixo.
-            Podes definir tu mesmo, ou usar uma classe automática — como a MaxNLocator.
-            --plt.MaxNLocator(integer=True)
-            Este é o tipo de locator que controla o espaçamento das marcas.
-            O argumento integer=True diz:
-            “coloca apenas marcas em valores inteiros (sem números decimais).”'''
+        ''' | Parte do código                | Função                                       |
+            | -------------------------------| -------------------------------------------- |
+            | plt.gca()                      | Obtém o gráfico (eixos) atual                |
+            | .xaxis  /  .yaxis              | Seleciona o eixo X ou Y                      |
+            | .set_major_locator()           | Define onde aparecem as marcações principais |
+            | plt.MaxNLocator(integer=True)  | Força os ticks a serem números inteiros      |'''
         
         plt.gca().xaxis.set_major_locator(plt.MaxNLocator(integer=True))
         plt.gca().yaxis.set_major_locator(plt.MaxNLocator(integer=True))
