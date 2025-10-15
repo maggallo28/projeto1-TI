@@ -30,12 +30,6 @@ def grafico(data, varNames):
         plt.xlabel(varNames[i])             
         plt.ylabel('MPG')                    
 
-        ''' | Parte do código                | Função                                       |
-            | -------------------------------| -------------------------------------------- |
-            | plt.gca()                      | Obtém o gráfico (eixos) atual                |
-            | .xaxis  /  .yaxis              | Seleciona o eixo X ou Y                      |
-            | .set_major_locator()           | Define onde aparecem as marcações principais |
-            | plt.MaxNLocator(integer=True)  | Força os ticks a serem números inteiros      |'''
         
         plt.gca().xaxis.set_major_locator(plt.MaxNLocator(integer=True))
         plt.gca().yaxis.set_major_locator(plt.MaxNLocator(integer=True))
