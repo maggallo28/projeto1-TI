@@ -49,11 +49,6 @@ def grafico_barras(varNames, listaContador):
         plt.gca().xaxis.set_major_locator(plt.MaxNLocator(integer=True))
         plt.gca().yaxis.set_major_locator(plt.MaxNLocator(integer=True))
 
-
-
-
-
-
 def main():
     path = '/Users/manuelgallo/Documents/Universidade/2º ANO/TI/Projeto1/CarDataset.xlsx'
     data = pd.read_excel(path)
