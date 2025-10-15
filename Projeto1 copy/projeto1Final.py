@@ -33,6 +33,27 @@ def grafico(data, varNames):
     plt.tight_layout()
     plt.show()
 
+def grafico_barras(varNames, listaContador):
+    plt.subplots(3, 2, figsize=(10, 10))
+
+    for i in range(len(varNames)):
+
+        #for c,v in listaContador(c,v):
+
+        
+        
+        plt.xlabel(varNames[i])
+        plt.ylabel('Count')
+        
+        # serve para aparecerem so inteiros no grafico
+        plt.gca().xaxis.set_major_locator(plt.MaxNLocator(integer=True))
+        plt.gca().yaxis.set_major_locator(plt.MaxNLocator(integer=True))
+
+
+
+
+
+
 def main():
     path = '/Users/manuelgallo/Documents/Universidade/2º ANO/TI/Projeto1/CarDataset.xlsx'
     data = pd.read_excel(path)
@@ -41,6 +62,7 @@ def main():
     varNames = data.columns.values.tolist()
 
     grafico(data, varNames)
+    grafico_barras(varNames, listaContador)
 
     listaContador, alfabeto = conta_ocorrencias(matriz)
 
