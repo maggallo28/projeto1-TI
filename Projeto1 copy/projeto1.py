@@ -91,7 +91,7 @@ def main():
     # Impressão da matriz (tabela original dos dados)
     # ============================================================
 
-    print("\n=== MATRIZ DE DADOS ===")
+    print("\n=== MATRIZ ===")
     for linha in matriz:
         print("\n", linha)
 
@@ -103,6 +103,11 @@ def main():
         print(f"\n=== Contagem de símbolos para {varNames[i]} ===")
         for valor, contagem in listaContador[i].items():
             print(f"{valor}: {contagem}")
+
+    print("\n=== Alfabetos ===\n")
+    for i in range(len(varNames)):
+        print(f"\n{varNames[i]}")
+        print("\n", alfabetos[i],"\n")
 
     # Gera e mostra os gráficos de dispersão
     grafico(data, varNames)
