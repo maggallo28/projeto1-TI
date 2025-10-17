@@ -32,7 +32,7 @@ def grafico(data, varNames):
 
     for i in range(len(varNames) - 1):
         plt.subplot(3, 2, i + 1)
-        plt.scatter(data[varNames[i]], data['MPG'], c="#9f0055")
+        plt.scatter(data[varNames[i]], data['MPG'], c="#025FE1")
         plt.title(f"MPG vs {varNames[i]}")
         plt.xlabel(varNames[i])
         plt.ylabel('MPG')
@@ -57,7 +57,7 @@ def grafico_barras(varNames, listaContador):
         for j in lista_x_valor:
             valores_string.append(str(j))
 
-        plt.bar(valores_string, lista_y_contagem, color="#9f0055")
+        plt.bar(valores_string, lista_y_contagem, color="#025FE1")
         plt.title(f"Gráfico de Barras - {varNames[i]}")
         plt.xlabel(varNames[i])
         plt.ylabel('Count')
@@ -110,9 +110,8 @@ def binning(data, coluna, bins):
 def main():
 
     #-------------------------------Ex 1-------------------------------
-    path = '/Users/manuelgallo/Documents/Universidade/2º ANO/TI/Projeto1/CarDataset.xlsx'
+    data = pd.read_excel('Projeto1 copy/CarDataset.xlsx')
 
-    data = pd.read_excel(path)
 
     matriz = data.values.tolist()
     varNames = data.columns.values.tolist()
