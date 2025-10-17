@@ -2,8 +2,11 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import numpy as np
 
+#-------------------------------Ex 2-----------------------------------
 def conta_ocorrencias(matriz):
-    matriz = np.array(matriz, dtype=np.uint16)
+
+    matriz = matriz_uint16(matriz)
+    
     listaContador = []
     simbolos = []
 
@@ -14,14 +17,22 @@ def conta_ocorrencias(matriz):
         simbolos.append(valores)
 
     return listaContador, simbolos
+#----------------------------------------------------------------------
 
+#-------------------------------Ex 3.a---------------------------------
+def matriz_uint16(matriz):
+    matriz = np.array(matriz, dtype=np.uint16)
+    return matriz
+#----------------------------------------------------------------------
+
+#-------------------------------Ex 2.a,b,c-----------------------------
 def grafico(data, varNames):
     
     plt.subplots(3, 2, figsize=(10, 10))
 
     for i in range(len(varNames) - 1):
         plt.subplot(3, 2, i + 1)
-        plt.scatter(data[varNames[i]], data['MPG'], c="#C50404")
+        plt.scatter(data[varNames[i]], data['MPG'], c="#9f0055")
         plt.title(f"MPG vs {varNames[i]}")
         plt.xlabel(varNames[i])
         plt.ylabel('MPG')
@@ -33,7 +44,9 @@ def grafico(data, varNames):
     # ajusta automaticamente os elementos do grafico (melhor visual)
     plt.tight_layout()
     plt.show()
+#----------------------------------------------------------------------
 
+#-------------------------------Ex 5-----------------------------------
 def grafico_barras(varNames, listaContador):
 
     for i in range(len(listaContador)):
@@ -44,22 +57,34 @@ def grafico_barras(varNames, listaContador):
         for j in lista_x_valor:
             valores_string.append(str(j))
 
-        plt.bar(valores_string, lista_y_contagem, color="#d70909")
+        plt.bar(valores_string, lista_y_contagem, color="#9f0055")
         plt.title(f"Gráfico de Barras - {varNames[i]}")
         plt.xlabel(varNames[i])
         plt.ylabel('Count')
+        plt.xticks(valores_string)
 
         # Mostra no máximo 12 valores no eixo X (para nao haver sobre posicao de valores no grafico)
         if len(valores_string) > 12:
             max_elementos = len(valores_string) // 12 
-            plt.xticks(valores_string[: : max_elementos])
+            plt.xticks(valores_string[::max_elementos])
         else:
             plt.xticks(valores_string)
 
 
         plt.tight_layout()
         plt.show()
+#----------------------------------------------------------------------
         
+#-------------------------------Ex 3.b---------------------------------
+def alfabeto_uint16():
+    tamanho = (2**16)
+    lista_alafabeto = []
+    for i in range(tamanho):
+        lista_alafabeto.append(i)
+    return lista_alafabeto
+#----------------------------------------------------------------------
+
+#-------------------------------Ex 6.a,b,c-----------------------------
 def binning(data, coluna, bins):
     
     for minimo, maximo in bins:
@@ -80,28 +105,29 @@ def binning(data, coluna, bins):
                 data.loc[i, coluna] = valor_mais_representativo
     
     return data
-
-
-#trying main 2
-
-#hi
+#----------------------------------------------------------------------
 
 def main():
+
+    #-------------------------------Ex 1-------------------------------
     path = '/Users/manuelgallo/Documents/Universidade/2º ANO/TI/Projeto1/CarDataset.xlsx'
+
     data = pd.read_excel(path)
 
     matriz = data.values.tolist()
     varNames = data.columns.values.tolist()
+    #------------------------------------------------------------------
 
+    #-------------------------------Ex 2.d-----------------------------
     grafico(data, varNames)
-
-    listaContador, alfabeto = conta_ocorrencias(matriz)
-
+    listaContador, simbolos = conta_ocorrencias(matriz)
     grafico_barras(varNames, listaContador)
-
+    #------------------------------------------------------------------
+   
+    #-------------------------------Ex 6.a,b,c-------------------------
     bin_weight = [(0, 2000), (2001, 3000), (3001, 4000), (4001, 5500)]
     bin_disp   = [(0, 100), (101, 200), (201, 300), (301, 500)]
-    bin_hp     = [(0, 75), (76, 125), (126, 175), (176, 250),]
+    bin_hp     = [(0, 75), (76, 125), (126, 175), (176, 250)]
 
     data = binning(data, "Weight", bin_weight)
     data = binning(data, "Displacement", bin_disp)
@@ -114,7 +140,8 @@ def main():
     listaContador_bin, _ = conta_ocorrencias(matriz_bin)
 
     grafico_barras(colunas_bin, listaContador_bin)
+    #------------------------------------------------------------------
 
-    return listaContador, alfabeto
+    return listaContador, simbolos
 
-listaContador, alfabeto = main()
+listaContador, simbolos =  main()
