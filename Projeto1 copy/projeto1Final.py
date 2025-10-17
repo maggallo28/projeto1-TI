@@ -48,7 +48,6 @@ def grafico_barras(varNames, listaContador):
         plt.title(f"Gráfico de Barras - {varNames[i]}")
         plt.xlabel(varNames[i])
         plt.ylabel('Count')
-        plt.xticks(valores_string)
 
         # Mostra no máximo 12 valores no eixo X (para nao haver sobre posicao de valores no grafico)
         if len(valores_string) > 12:
