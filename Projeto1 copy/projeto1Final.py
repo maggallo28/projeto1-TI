@@ -84,6 +84,8 @@ def binning(data, coluna, bins):
 
 #trying main 2
 
+#hi
+
 def main():
     path = '/Users/manuelgallo/Documents/Universidade/2º ANO/TI/Projeto1/CarDataset.xlsx'
     data = pd.read_excel(path)
