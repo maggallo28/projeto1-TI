@@ -5,15 +5,15 @@ import numpy as np
 def conta_ocorrencias(matriz):
     matriz = np.array(matriz, dtype=np.uint16)
     listaContador = []
-    alfabetos = []
+    simbolos = []
 
     for i in range(matriz.shape[1]):
         coluna = matriz[:, i]
         valores, contagemValor = np.unique(coluna, return_counts=True)
         listaContador.append(dict(zip(valores, contagemValor)))
-        alfabetos.append(valores)
+        simbolos.append(valores)
 
-    return listaContador, alfabetos
+    return listaContador, simbolos
 
 def grafico(data, varNames):
     
@@ -42,7 +42,7 @@ def grafico_barras(varNames, listaContador):
 
         valores_string = [str(v) for v in lista_x_valor]
 
-        plt.bar(valores_string, lista_y_contagem, color="#1f77b4")
+        plt.bar(valores_string, lista_y_contagem, color="#d70909")
         plt.title(f"Gráfico de Barras - {varNames[i]}")
         plt.xlabel(varNames[i])
         plt.ylabel('Count')
@@ -80,7 +80,6 @@ def binning(data, coluna, bins):
     
     return data
         
-
 def main():
     path = '/Users/manuelgallo/Documents/Universidade/2º ANO/TI/Projeto1/CarDataset.xlsx'
     data = pd.read_excel(path)
@@ -96,7 +95,7 @@ def main():
 
     bin_weight = [(0, 2000), (2001, 3000), (3001, 4000), (4001, 5500)]
     bin_disp   = [(0, 100), (101, 200), (201, 300), (301, 500)]
-    bin_hp     = [(0, 75), (76, 125), (126, 175), (176, 250), (251, 500)]
+    bin_hp     = [(0, 75), (76, 125), (126, 175), (176, 250),]
 
     data = binning(data, "Weight", bin_weight)
     data = binning(data, "Displacement", bin_disp)
