@@ -40,7 +40,9 @@ def grafico_barras(varNames, listaContador):
         lista_x_valor = list(listaContador[i].keys())
         lista_y_contagem = list(listaContador[i].values())
 
-        valores_string = [str(v) for v in lista_x_valor]
+        valores_string = []
+        for j in lista_x_valor:
+            valores_string.append(str(j))
 
         plt.bar(valores_string, lista_y_contagem, color="#d70909")
         plt.title(f"Gráfico de Barras - {varNames[i]}")
@@ -51,7 +53,7 @@ def grafico_barras(varNames, listaContador):
         # Mostra no máximo 12 valores no eixo X (para nao haver sobre posicao de valores no grafico)
         if len(valores_string) > 12:
             max_elementos = len(valores_string) // 12 
-            plt.xticks(valores_string[::max_elementos])
+            plt.xticks(valores_string[: : max_elementos])
         else:
             plt.xticks(valores_string)
 
