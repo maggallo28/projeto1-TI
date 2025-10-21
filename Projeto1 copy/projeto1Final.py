@@ -77,11 +77,8 @@ def grafico_barras(varNames, listaContador):
         
 #-------------------------------Ex 3.b---------------------------------
 def alfabeto_uint16():
-    tamanho = (2**16)
-    lista_alafabeto = []
-    for i in range(tamanho):
-        lista_alafabeto.append(i)
-    return lista_alafabeto
+    return list(range(2**16))
+
 #----------------------------------------------------------------------
 
 #-------------------------------Ex 6.a,b,c-----------------------------
