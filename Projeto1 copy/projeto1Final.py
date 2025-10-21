@@ -77,8 +77,8 @@ def grafico_barras(varNames, listaContador):
         
 #-------------------------------Ex 3.b---------------------------------
 def alfabeto_uint16():
-    return list(range(2**16))
-
+    lista_alfabeto = np.arange(2**16, dtype=np.uint16)
+    return lista_alfabeto
 #----------------------------------------------------------------------
 
 #-------------------------------Ex 6.a,b,c-----------------------------
