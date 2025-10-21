@@ -32,7 +32,7 @@ def grafico(data, varNames):
 
     for i in range(len(varNames) - 1):
         plt.subplot(3, 2, i + 1)
-        plt.scatter(data[varNames[i]], data['MPG'], c="#025FE1")
+        plt.scatter(data[varNames[i]], data['MPG'], c="#B31616")
         plt.title(f"MPG vs {varNames[i]}")
         plt.xlabel(varNames[i])
         plt.ylabel('MPG')
@@ -57,7 +57,7 @@ def grafico_barras(varNames, listaContador):
         for j in lista_x_valor:
             valores_string.append(str(j))
 
-        plt.bar(valores_string, lista_y_contagem, color="#025FE1")
+        plt.bar(valores_string, lista_y_contagem, color="#B31616")
         plt.title(f"Gráfico de Barras - {varNames[i]}")
         plt.xlabel(varNames[i])
         plt.ylabel('Count')
@@ -70,15 +70,13 @@ def grafico_barras(varNames, listaContador):
         else:
             plt.xticks(valores_string)
 
-
         plt.tight_layout()
         plt.show()
 #----------------------------------------------------------------------
         
 #-------------------------------Ex 3.b---------------------------------
 def alfabeto_uint16():
-    lista_alfabeto = np.arange(2**16, dtype=np.uint16)
-    return lista_alfabeto
+    return np.arange(2**16, dtype=np.uint16)
 #----------------------------------------------------------------------
 
 #-------------------------------Ex 6.a,b,c-----------------------------
