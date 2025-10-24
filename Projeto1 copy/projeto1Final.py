@@ -101,12 +101,57 @@ def binning(data, coluna, bins):
     
     return data
 #----------------------------------------------------------------------
+def binning_intervalos(matriz, varNames):
+
+    matriz = matriz_uint16(matriz)
+
+    bin_weight = []
+    bin_disp = []
+    bin_hp = []
+
+    bin_var = [bin_weight, bin_disp, bin_hp]
+
+    colunas_bin = ["Weight", "Displacement", "Horsepower"]
+
+    for i in range(len(colunas_bin)):
+        coluna_bin = []
+        salto = 0
+        contador = 0
+        index = varNames.index(colunas_bin[i])
+        for j in range(len(matriz)):
+            coluna_bin.append(matriz[j][index])
+
+        maximo = max(coluna_bin)
+
+        if(i == 0):
+            salto = 40
+
+            while (((contador + 1) * salto - 1) <= maximo):
+                bin_var[i].append((contador * salto, (contador + 1) * salto - 1))
+                contador += 1
+
+           #quantIntervalos = maximo//salto
+           #for i in range(quantIntervalos):
+           #    bin_var[i].append(i*salto,((i+1)*salto)-1))
+
+        else:
+            salto = 5
+
+            while (((contador * salto) + (salto - 1)) <= maximo):
+                bin_var[i].append((contador * salto, contador * salto + (salto - 1)))
+                contador += 1
+
+           #quantIntervalos = maximo//salto
+           #for i in range(quantIntervalos):
+           #    bin_var[i].append(i*salto,((i+1)*salto)-1))
+
+    return bin_var[0], bin_var[1], bin_var[2]
+#----------------------------------------------------------------------
 
 def main():
 
     #-------------------------------Ex 1-------------------------------
     data = pd.read_excel('Projeto1 copy/CarDataset.xlsx')
-
 
     matriz = data.values.tolist()
     varNames = data.columns.values.tolist()
@@ -119,13 +164,16 @@ def main():
     #------------------------------------------------------------------
    
     #-------------------------------Ex 6.a,b,c-------------------------
-    bin_weight = [(0, 2000), (2001, 3000), (3001, 4000), (4001, 5500)]
-    bin_disp   = [(0, 100), (101, 200), (201, 300), (301, 500)]
-    bin_hp     = [(0, 75), (76, 125), (126, 175), (176, 250)]
+    bin_weight = []
+    bin_disp   = []
+    bin_hp     = []
+
+    bin_weight, bin_disp, bin_hp = binning_intervalos(matriz, varNames)
 
     data = binning(data, "Weight", bin_weight)
     data = binning(data, "Displacement", bin_disp)
     data = binning(data, "Horsepower", bin_hp)
+
 
     grafico(data, varNames)
 
