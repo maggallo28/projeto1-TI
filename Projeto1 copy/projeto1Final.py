@@ -139,6 +139,34 @@ def binning_intervalos(matriz, varNames):
     return bin_var[0], bin_var[1], bin_var[2]
 #----------------------------------------------------------------------
 
+#------------------------------Ex 7.a,b------------------------------
+
+def media_bits(listaContador, matriz):
+    # --- a) Entropia por variável ---
+    entropias_vars = []
+    for contador in listaContador:
+        total = sum(contador.values())
+        probs = [v / total for v in contador.values()]
+        H = -sum(p * np.log2(p) for p in probs)
+        entropias_vars.append(H)
+
+    # --- b) Entropia global ---
+    # achata a matriz numa única lista de símbolos
+    todos_valores = [valor for linha in matriz for valor in linha]
+    valores, contagens = np.unique(todos_valores, return_counts=True)
+    probs_total = contagens / np.sum(contagens)
+    H_total = -np.sum(probs_total * np.log2(probs_total))
+
+    # imprimir resultados
+    print("\nEntropia média (bits por símbolo) por variável:")
+    for i, H in enumerate(entropias_vars):
+        print(f"Variável {i+1}: {H:.4f} bits")
+
+    print(f"\nEntropia total (dados completos): {H_total:.4f} bits\n")
+
+    return entropias_vars, H_total
+
+
 def main():
 
     #-------------------------------Ex 1-------------------------------
@@ -153,7 +181,10 @@ def main():
     listaContador, simbolos = conta_ocorrencias(matriz)
     grafico_barras(varNames, listaContador)
     #------------------------------------------------------------------
-   
+
+    #------------------------------Ex 7.a,b------------------------------
+    entropias_vars, H_total = media_bits(listaContador, matriz)
+
     #-------------------------------Ex 6.a,b,c,d,e-------------------------
     bin_weight = []
     bin_disp   = []
@@ -171,6 +202,7 @@ def main():
     colunas_bin = ["Weight", "Displacement", "Horsepower"]
     matriz_bin = data[colunas_bin].values.tolist()
     listaContador_bin, _ = conta_ocorrencias(matriz_bin)
+    
 
     grafico_barras(colunas_bin, listaContador_bin)
     #------------------------------------------------------------------
