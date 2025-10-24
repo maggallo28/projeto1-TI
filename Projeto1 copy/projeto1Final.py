@@ -129,21 +129,12 @@ def binning_intervalos(matriz, varNames):
             while (((contador + 1) * salto - 1) <= maximo):
                 bin_var[i].append((contador * salto, (contador + 1) * salto - 1))
                 contador += 1
-
-           #quantIntervalos = maximo//salto
-           #for i in range(quantIntervalos):
-           #    bin_var[i].append(i*salto,((i+1)*salto)-1))
-
         else:
             salto = 5
 
-            while (((contador * salto) + (salto - 1)) <= maximo):
-                bin_var[i].append((contador * salto, contador * salto + (salto - 1)))
+            while (((contador + 1) * salto - 1) <= maximo):
+                bin_var[i].append((contador * salto, (contador + 1) * salto - 1))
                 contador += 1
-
-           #quantIntervalos = maximo//salto
-           #for i in range(quantIntervalos):
-           #    bin_var[i].append(i*salto,((i+1)*salto)-1))
 
     return bin_var[0], bin_var[1], bin_var[2]
 #----------------------------------------------------------------------
