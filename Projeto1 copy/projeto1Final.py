@@ -150,6 +150,31 @@ def binning_intervalos(matriz, varNames):
     return bin_var[0], bin_var[1], bin_var[2]
 #----------------------------------------------------------------------
 
+#---------------------------------Ex 7---------------------------------
+def media_bits(listaContador, matriz):
+
+    entropias_vars = []
+    for contador in listaContador:
+        total = sum(contador.values())
+        probs = []
+        for v in contador.values():
+            probs.append(v / total)
+
+        entropia_variavel = -np.sum(probs * np.log2(probs))     #formula entropia
+        entropias_vars.append(entropia_variavel)
+
+    todos_valores = []
+    for i in matriz:
+        for j in i:
+            todos_valores.append(j)
+
+    valores, contagens = np.unique(todos_valores, return_counts=True)
+    prob_total = contagens / np.sum(contagens)
+    entropia_total = -np.sum(prob_total * np.log2(prob_total))        #formula entropia
+
+    return entropias_vars, entropia_total
+#----------------------------------------------------------------------
+
 #---------------------------------Ex 8---------------------------------
 def media_bits_huff(listaContador, simbolos):
     medias = []
@@ -173,34 +198,6 @@ def media_bits_huff(listaContador, simbolos):
 
     return medias
 #----------------------------------------------------------------------
-
-#---------------------------------Ex 7---------------------------------
-def media_bits(listaContador, matriz):
-
-    entropias_vars = []
-    for contador in listaContador:
-        total = sum(contador.values())
-        probs = []
-        for v in contador.values():
-            probs.append(v / total )
-
-        entropia_variavel = -np.sum(probs * np.log2(probs))     #formula entropia
-        entropias_vars.append(entropia_variavel)
-
-        entropias_vars.append(entropia_variavel)
-
-    todos_valores = []
-    for i in matriz:
-        for j in i:
-            todos_valores.append(j)
-
-    valores, contagens = np.unique(todos_valores, return_counts=True)
-    prob_total = contagens / np.sum(contagens)
-    entropia_total = -np.sum(prob_total * np.log2(prob_total))        #formula entropia
-
-    return entropias_vars, entropia_total
-#----------------------------------------------------------------------
-
 #-----------------------------------Main-------------------------------
 
 def main():
