@@ -194,12 +194,12 @@ def media_bits_huff(listaContador, simbolos):
         conta_media = np.sum(np.array(lengths) * prob)
         medias.append(conta_media)
 
-        print(f"Variável {i + 1} → {conta_media:.2f} bits/símbolo")
+        print(f"Variável {i + 1} : {conta_media:.2f} bits/símbolo")
 
     return medias
 #----------------------------------------------------------------------
-#-----------------------------------Main-------------------------------
 
+#-----------------------------------Main-------------------------------
 def main():
 
     #-------------------------------Ex 1-------------------------------
