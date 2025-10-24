@@ -117,22 +117,22 @@ def binning_intervalos(matriz, varNames):
         coluna_bin = []
         salto = 0
         contador = 0
-        index = varNames.index(colunas_bin[i])
-        for j in range(len(matriz)):
-            coluna_bin.append(matriz[j][index])
+        index = varNames.index(colunas_bin[i])  #procurar o indice da coluna da matriz
+        for j in range(len(matriz)):            #percorrer todos os elementos da coluna
+            coluna_bin.append(matriz[j][index]) #colocar os valores da coluna em colunas_bin
 
-        maximo = max(coluna_bin)
+        maximo = max(coluna_bin) 
 
-        if(i == 0):
+        if(i == 0): #primeiro elemento de colunas_bin
             salto = 40
 
-            while (((contador + 1) * salto - 1) <= maximo):
+            while (((contador + 1) * salto - 1) < maximo):
                 bin_var[i].append((contador * salto, (contador + 1) * salto - 1))
                 contador += 1
         else:
             salto = 5
 
-            while (((contador + 1) * salto - 1) <= maximo):
+            while (((contador + 1) * salto - 1) < maximo):
                 bin_var[i].append((contador * salto, (contador + 1) * salto - 1))
                 contador += 1
 
@@ -154,7 +154,7 @@ def main():
     grafico_barras(varNames, listaContador)
     #------------------------------------------------------------------
    
-    #-------------------------------Ex 6.a,b,c-------------------------
+    #-------------------------------Ex 6.a,b,c,d,e-------------------------
     bin_weight = []
     bin_disp   = []
     bin_hp     = []
