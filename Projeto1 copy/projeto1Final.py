@@ -142,30 +142,27 @@ def binning_intervalos(matriz, varNames):
 #------------------------------Ex 7.a,b------------------------------
 
 def media_bits(listaContador, matriz):
-    # --- a) Entropia por variável ---
+
     entropias_vars = []
     for contador in listaContador:
         total = sum(contador.values())
-        probs = [v / total for v in contador.values()]
-        H = -sum(p * np.log2(p) for p in probs)
-        entropias_vars.append(H)
+        probs = []
+        for v in contador.values():
+            probs.append(v / total )
+        entropia_variavel = -sum(p * np.log2(p) for p in probs)
+        entropias_vars.append(entropia_variavel)
 
-    # --- b) Entropia global ---
     # achata a matriz numa única lista de símbolos
-    todos_valores = [valor for linha in matriz for valor in linha]
+    todos_valores = []
+    for linha in matriz:
+        for valor in linha:
+            todos_valores.append(valor)
+
     valores, contagens = np.unique(todos_valores, return_counts=True)
     probs_total = contagens / np.sum(contagens)
-    H_total = -np.sum(probs_total * np.log2(probs_total))
+    entropia_total = -np.sum(probs_total * np.log2(probs_total))        #formula entropia
 
-    # imprimir resultados
-    print("\nEntropia média (bits por símbolo) por variável:")
-    for i, H in enumerate(entropias_vars):
-        print(f"Variável {i+1}: {H:.4f} bits")
-
-    print(f"\nEntropia total (dados completos): {H_total:.4f} bits\n")
-
-    return entropias_vars, H_total
-
+    return entropias_vars, entropia_total
 
 def main():
 
@@ -183,7 +180,7 @@ def main():
     #------------------------------------------------------------------
 
     #------------------------------Ex 7.a,b------------------------------
-    entropias_vars, H_total = media_bits(listaContador, matriz)
+    entropias_vars, entropia_total = media_bits(listaContador, matriz)
 
     #-------------------------------Ex 6.a,b,c,d,e-------------------------
     bin_weight = []
