@@ -149,10 +149,10 @@ def media_bits(listaContador, matriz):
         probs = []
         for v in contador.values():
             probs.append(v / total )
-        entropia_variavel = -sum(p * np.log2(p) for p in probs)
+
+        entropia_variavel = -np.sum(probs * np.log2(probs))
         entropias_vars.append(entropia_variavel)
 
-    # achata a matriz numa única lista de símbolos
     todos_valores = []
     for linha in matriz:
         for valor in linha:
