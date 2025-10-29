@@ -270,4 +270,4 @@ def main():
     #------------------------------------------------------------------
     return listaContador, simbolos
 
-listaContador, simbolos =  main()
+listaContador, simbolos = main()

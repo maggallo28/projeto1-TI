@@ -167,17 +167,12 @@ def media_bits(listaContador, matriz):
     prob_total = contagens / np.sum(contagens)              #ver essas contagens e dividir pelo total
     entropia_total = -np.sum(prob_total * np.log2(prob_total))        #formula entropia
 
-    return entropias_vars, entropia_total
+    return entropias_vars, entropia_total, prob_total
 #----------------------------------------------------------------------
-
-#---------------------------------Ex 8---------------------------------
 
 #---------------------------------Ex 8---------------------------------
 def media_bits_huff(listaContador, simbolos):
     """
-    Calcula o comprimento médio (em bits por símbolo) de um código de Huffman
-    construído separadamente para cada variável.
-
     Para cada variável:
     - reconstrói a lista de símbolos repetidos (cada símbolo repetido 'contagem' vezes)
       porque HuffmanCodec.from_data espera uma sequência de símbolos (dados brutos).
@@ -273,10 +268,10 @@ def main():
     valores, contagens = np.unique(todos_simbolos, return_counts=True)
     probs_total = contagens / np.sum(contagens)
 
-    # comprimento médio do código em bits por símbolo para o conjunto completo.
+    # comprimento médio do código em bits por símbolo.
     Lmedio_total = np.sum(np.array(lengths_total) * probs_total)
 
-    print(f"Conjunto completo : {Lmedio_total:.2f} bits/símbolo")
+    print(f"\nConjunto completo : {Lmedio_total:.2f} bits/símbolo")
 
     #------------------------------------------------------------------
     return listaContador, simbolos
