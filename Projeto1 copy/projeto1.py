@@ -167,7 +167,7 @@ def media_bits(listaContador, matriz):
     prob_total = contagens / np.sum(contagens)              #ver essas contagens e dividir pelo total
     entropia_total = -np.sum(prob_total * np.log2(prob_total))        #formula entropia
 
-    return entropias_vars, entropia_total, prob_total
+    return entropias_vars, entropia_total
 #----------------------------------------------------------------------
 
 #---------------------------------Ex 8---------------------------------
@@ -275,6 +275,5 @@ def main():
 
     #------------------------------------------------------------------
     return listaContador, simbolos
-
 
 listaContador, simbolos =  main()

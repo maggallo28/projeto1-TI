@@ -199,6 +199,19 @@ def media_bits_huff(listaContador, simbolos):
     return medias
 #----------------------------------------------------------------------
 
+#---------------------------------Ex 9---------------------------------
+def correlacao_pearson(data, varNames):
+    
+    mpg = data['MPG'].values
+
+    for i in varNames:
+        if i != 'MPG':
+            dados_coluna = data[i].values
+            # cc de pearson esta na posicao [0,1] (da matriz obtida pela funcao corrcoef)
+            r = np.corrcoef(mpg, dados_coluna)[0, 1]
+            print(f"MPG e {i} : {r:.5f}")
+#----------------------------------------------------------------------
+
 #-----------------------------------Main-------------------------------
 def main():
 
@@ -266,8 +279,14 @@ def main():
     Lmedio_total = np.sum(np.array(lengths_total) * probs_total)
 
     print(f"\nConjunto completo : {Lmedio_total:.2f} bits/símbolo")
-
     #------------------------------------------------------------------
+
+    #-------------------------------Ex 9-------------------------------
+    print("\n")
+    print("Coeficientes de correlacao de pearson com MPG\n")
+    correlacao_pearson(data, varNames)
+    #------------------------------------------------------------------
+    
     return listaContador, simbolos
 
 listaContador, simbolos = main()
