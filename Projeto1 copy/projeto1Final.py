@@ -3,28 +3,6 @@ import matplotlib.pyplot as plt
 import numpy as np
 import huffmancodec as huffc
 
-#-------------------------------Ex 2-----------------------------------
-def conta_ocorrencias(matriz):
-
-    matriz = matriz_uint16(matriz)
-    
-    listaContador = []
-    simbolos = []
-
-    for i in range(matriz.shape[1]):
-        coluna = matriz[:, i]
-        valores, contagemValor = np.unique(coluna, return_counts=True)
-        listaContador.append(dict(zip(valores, contagemValor)))
-        simbolos.append(valores)
-
-    return listaContador, simbolos
-#----------------------------------------------------------------------
-
-#-------------------------------Ex 3.a---------------------------------
-def matriz_uint16(matriz):
-    matriz = np.array(matriz, dtype=np.uint16)
-    return matriz
-#----------------------------------------------------------------------
 
 #-------------------------------Ex 2.a,b,c-----------------------------
 def grafico(data, varNames):
@@ -47,6 +25,38 @@ def grafico(data, varNames):
     plt.show()
 #----------------------------------------------------------------------
 
+#-------------------------------Ex 3.a---------------------------------
+def matriz_uint16(matriz):
+    matriz = np.array(matriz, dtype=np.uint16)
+    return matriz
+#----------------------------------------------------------------------
+
+#-------------------------------Ex 3.b---------------------------------
+def alfabeto_uint16():
+    tamanho = (2**16)
+    lista_alafabeto = []
+    for i in range(tamanho):
+        lista_alafabeto.append(i)
+    return lista_alafabeto
+#----------------------------------------------------------------------
+
+#-------------------------------Ex 4-----------------------------------
+def conta_ocorrencias(matriz):
+
+    matriz = matriz_uint16(matriz)
+    
+    listaContador = []
+    simbolos = []
+
+    for i in range(matriz.shape[1]):
+        coluna = matriz[:, i]
+        valores, contagemValor = np.unique(coluna, return_counts=True)
+        listaContador.append(dict(zip(valores, contagemValor)))
+        simbolos.append(valores)
+
+    return listaContador, simbolos
+#----------------------------------------------------------------------
+
 #-------------------------------Ex 5-----------------------------------
 def grafico_barras(varNames, listaContador):
 
@@ -58,7 +68,7 @@ def grafico_barras(varNames, listaContador):
         for j in lista_x_valor:
             valores_string.append(str(j))
 
-        plt.bar(valores_string, lista_y_contagem, color="#1f77b4")
+        plt.bar(valores_string, lista_y_contagem, color="#C50404")
         plt.title(f"Gráfico de Barras - {varNames[i]}")
         plt.xlabel(varNames[i])
         plt.ylabel('Count')
@@ -76,15 +86,6 @@ def grafico_barras(varNames, listaContador):
         plt.show()
 #----------------------------------------------------------------------
         
-#-------------------------------Ex 3.b---------------------------------
-def alfabeto_uint16():
-    tamanho = (2**16)
-    lista_alafabeto = []
-    for i in range(tamanho):
-        lista_alafabeto.append(i)
-    return lista_alafabeto
-#----------------------------------------------------------------------
-  
 #-------------------------------Ex 6.a,b,c-----------------------------
 def binning(data, coluna, bins):
     
@@ -176,8 +177,8 @@ def media_bits(listaContador, matriz):
 #----------------------------------------------------------------------
 
 #---------------------------------Ex 8---------------------------------
-def media_bits_huff(listaContador, simbolos):
-    medias = []
+def media_bits_huff(listaContador):
+    medias = []     
 
     for i in range(len(listaContador)):
         contagens = np.array(list(listaContador[i].values()))
@@ -196,7 +197,6 @@ def media_bits_huff(listaContador, simbolos):
 
         print(f"Variável {i + 1} : {conta_media:.2f} bits/símbolo")
 
-    return medias
 #----------------------------------------------------------------------
 
 #---------------------------------Ex 9---------------------------------
@@ -228,10 +228,6 @@ def main():
     grafico_barras(varNames, listaContador)
     #------------------------------------------------------------------
 
-    #------------------------------Ex 7.a,b------------------------------
-    entropias_vars, entropia_total = media_bits(listaContador, matriz)
-    #------------------------------------------------------------------
-
     #-------------------------------Ex 6.a,b,c,d,e---------------------
     bin_weight = []
     bin_disp   = []
@@ -252,35 +248,13 @@ def main():
     grafico_barras(colunas_bin, listaContador_bin)
     #------------------------------------------------------------------
 
-    #-------------------------------Ex 8-------------------------------
-    medias = media_bits_huff(listaContador, simbolos)
-    
-    todos_simbolos = []
-    for i in range(len(listaContador)):
-        for simbolo, contagem in listaContador[i].items():
-            todos_simbolos += [simbolo] * contagem
-
-    codec_total = huffc.HuffmanCodec.from_data(todos_simbolos)
-    symbols_total, lengths_total = codec_total.get_code_len()
-
-    todos_simbolos = []
-    for i in range(len(listaContador)):
-        for simbolo, contagem in listaContador[i].items():
-            todos_simbolos += [simbolo] * contagem
-
-    codec_total = huffc.HuffmanCodec.from_data(todos_simbolos)
-    symbols_total, lengths_total = codec_total.get_code_len()
-
-    # probabilidades de todos os simbolos juntos
-    valores, contagens = np.unique(todos_simbolos, return_counts=True)
-    probs_total = contagens / np.sum(contagens)
-
-    # comprimento médio do código em bits por símbolo.
-    Lmedio_total = np.sum(np.array(lengths_total) * probs_total)
-
-    print(f"\nConjunto completo : {Lmedio_total:.2f} bits/símbolo")
+    #------------------------------Ex 7.a,b------------------------------
+    entropias_vars, entropia_total = media_bits(listaContador, matriz)
     #------------------------------------------------------------------
 
+    #-------------------------------Ex 8-------------------------------
+    medias = media_bits_huff(listaContador)
+    
     #-------------------------------Ex 9-------------------------------
     print("\n")
     print("Coeficientes de correlacao de pearson com MPG\n")
