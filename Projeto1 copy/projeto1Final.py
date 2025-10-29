@@ -1,8 +1,46 @@
 import pandas as pd
 import matplotlib.pyplot as plt
 import numpy as np
+import huffmancodec as huffc
 
-#-------------------------------Ex 2-----------------------------------
+
+#-------------------------------Ex 2.a,b,c-----------------------------
+def grafico(data, varNames):
+    
+    plt.subplots(3, 2, figsize=(10, 10))
+
+    for i in range(len(varNames) - 1):
+        plt.subplot(3, 2, i + 1)
+        plt.scatter(data[varNames[i]], data['MPG'], c="#C50404")
+        plt.title(f"MPG vs {varNames[i]}")
+        plt.xlabel(varNames[i])
+        plt.ylabel('MPG')
+
+        # serve para aparecerem so inteiros no grafico
+        plt.gca().xaxis.set_major_locator(plt.MaxNLocator(integer=True))
+        plt.gca().yaxis.set_major_locator(plt.MaxNLocator(integer=True))
+
+    # ajusta automaticamente os elementos do grafico (melhor visual)
+    plt.tight_layout()
+    plt.show()
+#----------------------------------------------------------------------
+
+#-------------------------------Ex 3.a---------------------------------
+def matriz_uint16(matriz):
+    matriz = np.array(matriz, dtype=np.uint16)
+    return matriz
+#----------------------------------------------------------------------
+
+#-------------------------------Ex 3.b---------------------------------
+def alfabeto_uint16():
+    tamanho = (2**16)
+    lista_alafabeto = []
+    for i in range(tamanho):
+        lista_alafabeto.append(i)
+    return lista_alafabeto
+#----------------------------------------------------------------------
+
+#-------------------------------Ex 4-----------------------------------
 def conta_ocorrencias(matriz):
 
     matriz = matriz_uint16(matriz)
@@ -19,33 +57,6 @@ def conta_ocorrencias(matriz):
     return listaContador, simbolos
 #----------------------------------------------------------------------
 
-#-------------------------------Ex 3.a---------------------------------
-def matriz_uint16(matriz):
-    matriz = np.array(matriz, dtype=np.uint16)
-    return matriz
-#----------------------------------------------------------------------
-
-#-------------------------------Ex 2.a,b,c-----------------------------
-def grafico(data, varNames):
-    
-    plt.subplots(3, 2, figsize=(10, 10))
-
-    for i in range(len(varNames) - 1):
-        plt.subplot(3, 2, i + 1)
-        plt.scatter(data[varNames[i]], data['MPG'], c="#B31616")
-        plt.title(f"MPG vs {varNames[i]}")
-        plt.xlabel(varNames[i])
-        plt.ylabel('MPG')
-
-        # serve para aparecerem so inteiros no grafico
-        plt.gca().xaxis.set_major_locator(plt.MaxNLocator(integer=True))
-        plt.gca().yaxis.set_major_locator(plt.MaxNLocator(integer=True))
-
-    # ajusta automaticamente os elementos do grafico (melhor visual)
-    plt.tight_layout()
-    plt.show()
-#----------------------------------------------------------------------
-
 #-------------------------------Ex 5-----------------------------------
 def grafico_barras(varNames, listaContador):
 
@@ -57,7 +68,7 @@ def grafico_barras(varNames, listaContador):
         for j in lista_x_valor:
             valores_string.append(str(j))
 
-        plt.bar(valores_string, lista_y_contagem, color="#B31616")
+        plt.bar(valores_string, lista_y_contagem, color="#C50404")
         plt.title(f"Gráfico de Barras - {varNames[i]}")
         plt.xlabel(varNames[i])
         plt.ylabel('Count')
@@ -70,15 +81,11 @@ def grafico_barras(varNames, listaContador):
         else:
             plt.xticks(valores_string)
 
+
         plt.tight_layout()
         plt.show()
 #----------------------------------------------------------------------
         
-#-------------------------------Ex 3.b---------------------------------
-def alfabeto_uint16():
-    return np.arange(2**16, dtype=np.uint16)
-#----------------------------------------------------------------------
-
 #-------------------------------Ex 6.a,b,c-----------------------------
 def binning(data, coluna, bins):
     
@@ -90,17 +97,20 @@ def binning(data, coluna, bins):
                 indices_intervalo.append(i)
         
         if indices_intervalo:
-            # Obter valores do intervalo
-            valores = [data.loc[i, coluna] for i in indices_intervalo]
-            # Calcular o valor mais representativo
+
+            valores = []
+            for i in indices_intervalo:
+                valores.append(data.loc[i, coluna])
+
             valor_mais_representativo = max(set(valores), key=valores.count)
-            
-            # Substituir todos os valores do intervalo pela o valor mais representativo
+
             for i in indices_intervalo:
                 data.loc[i, coluna] = valor_mais_representativo
     
     return data
 #----------------------------------------------------------------------
+
+#-------------------------------Ex 6.d,e-------------------------------
 def binning_intervalos(matriz, varNames):
 
     matriz = matriz_uint16(matriz)
@@ -117,13 +127,15 @@ def binning_intervalos(matriz, varNames):
         coluna_bin = []
         salto = 0
         contador = 0
-        index = varNames.index(colunas_bin[i])  #procurar o indice da coluna da matriz
-        for j in range(len(matriz)):            #percorrer todos os elementos da coluna
-            coluna_bin.append(matriz[j][index]) #colocar os valores da coluna em colunas_bin
 
-        maximo = max(coluna_bin) 
+        index = varNames.index(colunas_bin[i])
 
-        if(i == 0): #primeiro elemento de colunas_bin
+        for j in range(len(matriz)):
+            coluna_bin.append(matriz[j][index])
+
+        maximo = max(coluna_bin)
+
+        if(i == 0):
             salto = 40
 
             while (((contador + 1) * salto - 1) < maximo):
@@ -139,6 +151,68 @@ def binning_intervalos(matriz, varNames):
     return bin_var[0], bin_var[1], bin_var[2]
 #----------------------------------------------------------------------
 
+#---------------------------------Ex 7---------------------------------
+def media_bits(listaContador, matriz):
+
+    entropias_vars = []
+    for contador in listaContador:
+        total = sum(contador.values())
+        probs = []
+        for v in contador.values():
+            probs.append(v / total)
+
+        entropia_variavel = -np.sum(probs * np.log2(probs))     #formula entropia
+        entropias_vars.append(entropia_variavel)
+
+    todos_valores = []
+    for i in matriz:
+        for j in i:
+            todos_valores.append(j)
+
+    valores, contagens = np.unique(todos_valores, return_counts=True)
+    prob_total = contagens / np.sum(contagens)
+    entropia_total = -np.sum(prob_total * np.log2(prob_total))        #formula entropia
+
+    return entropias_vars, entropia_total
+#----------------------------------------------------------------------
+
+#---------------------------------Ex 8---------------------------------
+def media_bits_huff(listaContador):
+    medias = []     
+
+    for i in range(len(listaContador)):
+        contagens = np.array(list(listaContador[i].values()))
+        total = np.sum(contagens)
+        prob = contagens / total  
+
+        var = []
+        for simbolo, contagem in listaContador[i].items():
+            var += [simbolo] * contagem
+
+        codec = huffc.HuffmanCodec.from_data(var)
+        s, lengths = codec.get_code_len()
+
+        conta_media = np.sum(np.array(lengths) * prob)
+        medias.append(conta_media)
+
+        print(f"Variável {i + 1} : {conta_media:.2f} bits/símbolo")
+
+#----------------------------------------------------------------------
+
+#---------------------------------Ex 9---------------------------------
+def correlacao_pearson(data, varNames):
+    
+    mpg = data['MPG'].values
+
+    for i in varNames:
+        if i != 'MPG':
+            dados_coluna = data[i].values
+            # cc de pearson esta na posicao [0,1] (da matriz obtida pela funcao corrcoef)
+            r = np.corrcoef(mpg, dados_coluna)[0, 1]
+            print(f"MPG e {i} : {r:.5f}")
+#----------------------------------------------------------------------
+
+#-----------------------------------Main-------------------------------
 def main():
 
     #-------------------------------Ex 1-------------------------------
@@ -153,8 +227,8 @@ def main():
     listaContador, simbolos = conta_ocorrencias(matriz)
     grafico_barras(varNames, listaContador)
     #------------------------------------------------------------------
-   
-    #-------------------------------Ex 6.a,b,c,d,e-------------------------
+
+    #-------------------------------Ex 6.a,b,c,d,e---------------------
     bin_weight = []
     bin_disp   = []
     bin_hp     = []
@@ -165,7 +239,6 @@ def main():
     data = binning(data, "Displacement", bin_disp)
     data = binning(data, "Horsepower", bin_hp)
 
-
     grafico(data, varNames)
 
     colunas_bin = ["Weight", "Displacement", "Horsepower"]
@@ -175,6 +248,19 @@ def main():
     grafico_barras(colunas_bin, listaContador_bin)
     #------------------------------------------------------------------
 
+    #------------------------------Ex 7.a,b------------------------------
+    entropias_vars, entropia_total = media_bits(listaContador, matriz)
+    #------------------------------------------------------------------
+
+    #-------------------------------Ex 8-------------------------------
+    medias = media_bits_huff(listaContador)
+    
+    #-------------------------------Ex 9-------------------------------
+    print("\n")
+    print("Coeficientes de correlacao de pearson com MPG\n")
+    correlacao_pearson(data, varNames)
+    #------------------------------------------------------------------
+    
     return listaContador, simbolos
 
-listaContador, simbolos =  main()
+listaContador, simbolos = main()
