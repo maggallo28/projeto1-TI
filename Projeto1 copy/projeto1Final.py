@@ -209,21 +209,21 @@ def mi(data, varNames, listaContador):
     
     cnt_y = np.array(list(listaContador[6].values()))
     py = cnt_y / np.sum(cnt_y)
-    hy = -np.sum(py * np.log2(py))
+    hy = -np.sum(py * np.log2(py))  #entropia mpg
 
     for i in range(len(varNames)-1):
         
         cnt_x = np.array(list(listaContador[i].values()))
         px = cnt_x / np.sum(cnt_x)
-        hx = -np.sum(px * np.log2(px))
+        hx = -np.sum(px * np.log2(px))  #entropia variaveis
 
         coluna = data[varNames[i]].values
         pares = np.array(list(zip(coluna, data[varNames[6]].values)))
         _, cnt_xy = np.unique(pares, axis=0, return_counts=True)
         pxy = cnt_xy / np.sum(cnt_xy)
-        hxy = -np.sum(pxy * np.log2(pxy))
+        hxy = -np.sum(pxy * np.log2(pxy))   #entropia conjunta
 
-        mi = hx + hy - hxy
+        mi = hx + hy - hxy  #formula informacao mutua
 
         print(f"{varNames[i]} : {mi:.5f} bits")
 #----------------------------------------------------------------------
@@ -259,8 +259,6 @@ def estimacao_MPG(matriz):
 
         rms_error = np.sqrt(np.mean((mpg_real - mpg_estimado)**2))
         mae = np.mean(np.abs(mpg_real - mpg_estimado))
-        #for j in range(len(mpg_estimado)):
-        #    print(f"Est : {mpg_estimado[j]:.2f} | Real : {mpg_real[j]:.2f}")
 
         print(f"{col[n]} : ")
         print(f"root mean square error : {rms_error:.5}")
