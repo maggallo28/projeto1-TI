@@ -33,11 +33,7 @@ def matriz_uint16(matriz):
 
 #-------------------------------Ex 3.b---------------------------------
 def alfabeto_uint16():
-    tamanho = (2**16)
-    lista_alafabeto = []
-    for i in range(tamanho):
-        lista_alafabeto.append(i)
-    return lista_alafabeto
+    return np.arange(2**16, dtype=np.uint16)
 #----------------------------------------------------------------------
 
 #-------------------------------Ex 4-----------------------------------
@@ -177,9 +173,7 @@ def media_bits(listaContador, matriz):
 #----------------------------------------------------------------------
 
 #---------------------------------Ex 8---------------------------------
-def media_bits_huff(listaContador):
-    medias = []     
-
+def media_bits_huff(listaContador, varNames):
     for i in range(len(listaContador)):
         contagens = np.array(list(listaContador[i].values()))
         total = np.sum(contagens)
@@ -192,11 +186,10 @@ def media_bits_huff(listaContador):
         codec = huffc.HuffmanCodec.from_data(var)
         s, lengths = codec.get_code_len()
 
-        conta_media = np.sum(np.array(lengths) * prob)
-        medias.append(conta_media)
+        media = np.sum(np.array(lengths) * prob)
+        variancia = np.sum(prob * (np.array(lengths) - media)**2) 
 
-        print(f"Variável {i + 1} : {conta_media:.2f} bits/símbolo")
-
+        print(f"{varNames[i]} : {media:.5f} bits/simbolo | Variancia: {variancia:.5}") 
 #----------------------------------------------------------------------
 
 #---------------------------------Ex 9---------------------------------
@@ -207,9 +200,72 @@ def correlacao_pearson(data, varNames):
     for i in varNames:
         if i != 'MPG':
             dados_coluna = data[i].values
-            # cc de pearson esta na posicao [0,1] (da matriz obtida pela funcao corrcoef)
+            # cc de pearson esta na posicao [0, 1] (da matriz obtida pela funcao corrcoef) --> [[1 , r],[r , 1]]
             r = np.corrcoef(mpg, dados_coluna)[0, 1]
             print(f"MPG e {i} : {r:.5f}")
+#----------------------------------------------------------------------
+
+#---------------------------------Ex 10--------------------------------
+def mi(data, varNames, listaContador):
+    
+    cnt_y = np.array(list(listaContador[6].values()))
+    py = cnt_y / np.sum(cnt_y)
+    hy = -np.sum(py * np.log2(py))
+
+    for i in range(len(varNames)-1):
+        
+        cnt_x = np.array(list(listaContador[i].values()))
+        px = cnt_x / np.sum(cnt_x)
+        hx = -np.sum(px * np.log2(px))
+
+        coluna = data[varNames[i]].values
+        pares = np.array(list(zip(coluna, data[varNames[6]].values)))
+        _, cnt_xy = np.unique(pares, axis=0, return_counts=True)
+        pxy = cnt_xy / np.sum(cnt_xy)
+        hxy = -np.sum(pxy * np.log2(pxy))
+
+        mi = hx + hy - hxy
+
+        print(f"{varNames[i]} : {mi:.5f} bits")
+#----------------------------------------------------------------------
+
+#---------------------------------Ex 11--------------------------------
+def estimacao_MPG(matriz):
+    
+    matriz = np.array(matriz)
+    media_acceleracao = np.mean(matriz[:,0])
+    media_weight = np.mean(matriz[:,5])
+
+    for n in range(3):
+        col = ["Normal","Acceleration","Weight"]
+        antigo_mpg = []
+        novo_mpg = []
+
+        for i in range(len(matriz)):
+            if(n==0):
+                xx = matriz[i][0]
+                yy = matriz[i][5]
+            elif(n==1):
+                xx = media_acceleracao
+                yy = matriz[i][5]
+            elif(n==2):
+                xx = matriz[i][0]
+                yy = media_weight
+            var_novo_mpg = -5.5241 -0.146*xx -0.4909*matriz[i][1] +0.0026*matriz[i][2] -0.0045*matriz[i][3] +0.6725*matriz[i][4] -0.0059*yy
+            novo_mpg.append(var_novo_mpg)
+            antigo_mpg.append(matriz[i][6])
+        
+        mpg_real = np.array(antigo_mpg)
+        mpg_estimado = np.array(novo_mpg)
+
+        rms_error = np.sqrt(np.mean((mpg_real - mpg_estimado)**2))
+        mae = np.mean(np.abs(mpg_real - mpg_estimado))
+        #for j in range(len(mpg_estimado)):
+        #    print(f"Est : {mpg_estimado[j]:.2f} | Real : {mpg_real[j]:.2f}")
+
+        print(f"{col[n]} : ")
+        print(f"root mean square error : {rms_error:.5}")
+        print(f"mean absolut error : {mae:.5}")
 #----------------------------------------------------------------------
 
 #-----------------------------------Main-------------------------------
@@ -222,13 +278,19 @@ def main():
     varNames = data.columns.values.tolist()
     #------------------------------------------------------------------
 
+    #-------------------------------Ex 11------------------------------
+    print("\nex11-------------------------------------------")
+    estimacao_MPG(matriz)
+    print("-----------------------------------------------")
+    #------------------------------------------------------------------
+
     #-------------------------------Ex 2.d-----------------------------
     grafico(data, varNames)
     listaContador, simbolos = conta_ocorrencias(matriz)
     grafico_barras(varNames, listaContador)
     #------------------------------------------------------------------
 
-    #-------------------------------Ex 6.a,b,c,d,e---------------------
+#-------------------------------Ex 6.a,b,c,d,e---------------------
     bin_weight = []
     bin_disp   = []
     bin_hp     = []
@@ -248,19 +310,36 @@ def main():
     grafico_barras(colunas_bin, listaContador_bin)
     #------------------------------------------------------------------
 
-    #------------------------------Ex 7.a,b------------------------------
-    entropias_vars, entropia_total = media_bits(listaContador, matriz)
+    #------------------------------Ex 7.a,b----------------------------
+    listaContador[2] = listaContador_bin[1]  
+    listaContador[3] = listaContador_bin[2]  
+    listaContador[5] = listaContador_bin[0]  
+    print("\nex7--------------------------------------------")
+    media_bits(listaContador, matriz, varNames)
+    print("-----------------------------------------------")
     #------------------------------------------------------------------
 
     #-------------------------------Ex 8-------------------------------
-    medias = media_bits_huff(listaContador)
-    
-    #-------------------------------Ex 9-------------------------------
-    print("\n")
-    print("Coeficientes de correlacao de pearson com MPG\n")
-    correlacao_pearson(data, varNames)
+    print("\nex8--------------------------------------------")
+    print("Medias e Variancas : ")
+    media_bits_huff(listaContador, varNames)
+    print("-----------------------------------------------")
     #------------------------------------------------------------------
-    
+
+    #-------------------------------Ex 10------------------------------
+    print("\nex10-------------------------------------------")
+    print("Informacao Mutua MPG e :")
+    mi(data, varNames, listaContador)
+    print("-----------------------------------------------")
+    #------------------------------------------------------------------
+
+    #-------------------------------Ex 9-------------------------------
+    print("\nex9--------------------------------------------")
+    print("Coeficientes de correlacao de pearson com MPG : ")
+    correlacao_pearson(data, varNames)
+    print("-----------------------------------------------")
+    #------------------------------------------------------------------
+
     return listaContador, simbolos
 
-listaContador, simbolos = main()
+listaContador, simbolos =  main()
