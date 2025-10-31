@@ -148,16 +148,16 @@ def binning_intervalos(matriz, varNames):
 #----------------------------------------------------------------------
 
 #---------------------------------Ex 7---------------------------------
-def media_bits(listaContador, matriz):
+def media_bits(listaContador, matriz, varNames):
 
     entropias_vars = []
     for contador in listaContador:
         total = sum(contador.values())
-        probs = []
+        prob = []
         for v in contador.values():
-            probs.append(v / total)
+            prob.append(v / total )
 
-        entropia_variavel = -np.sum(probs * np.log2(probs))     #formula entropia
+        entropia_variavel = -np.sum(prob * np.log2(prob))    
         entropias_vars.append(entropia_variavel)
 
     todos_valores = []
@@ -165,11 +165,10 @@ def media_bits(listaContador, matriz):
         for j in i:
             todos_valores.append(j)
 
-    valores, contagens = np.unique(todos_valores, return_counts=True)
-    prob_total = contagens / np.sum(contagens)
-    entropia_total = -np.sum(prob_total * np.log2(prob_total))        #formula entropia
+    valores, contagens = np.unique(todos_valores, return_counts=True)    
 
-    return entropias_vars, entropia_total
+    for i in range(len(entropias_vars)):
+        print(f"Entropia {varNames[i]} : {entropias_vars[i]:.5} bits/simbolo")
 #----------------------------------------------------------------------
 
 #---------------------------------Ex 8---------------------------------
